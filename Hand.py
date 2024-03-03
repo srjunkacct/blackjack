@@ -14,6 +14,9 @@ class Hand:
     def __str__(self):
         return str(self.cards)
 
+    def computeRawValue(self):
+        return self.computeValue()[0]
+
     def computeValue(self):
         score = sum([card.value() for card in self.cards])
         hasAce = any([card.isAce() for card in self.cards])
@@ -26,16 +29,10 @@ class Hand:
 
     def hit(self, deck):
         drawnCard = deck.draw()
-        self.cards.append(drawnCard)
-        self.value = self.computeValue()
+        newCards = self.cards.copy()
+        newCards.append(drawnCard)
+        return Hand(newCards)
 
-    def split(self, deck):
-        if len(self.cards != 2 ) or ( self.cards[0].rank != Card.Rank.ACE ) or ( self.cards[1].rank != Card.Rank.ACE ):
-            return
-        splitHand = Hand([self.cards[1]])
-        self.cards  = [self.cards[0]]
-        self.value = self.computeValue()
-        return splitHand
-
-
+    def size(self):
+        return len(self.cards)
 

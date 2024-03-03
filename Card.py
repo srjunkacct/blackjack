@@ -41,27 +41,27 @@ class Card:
         return "{} of {}".format(self.rank, self.suit)
 
     def value(self):
-        if self.rank == Rank.ACE:
+        if self.rank.name == 'ACE':
             return 1
-        if self.rank == Rank.TWO:
+        if self.rank.name == 'TWO':
             return 2
-        if self.rank == Rank.THREE:
+        if self.rank.name == 'THREE':
             return 3
-        if self.rank == Rank.FOUR:
+        if self.rank.name == 'FOUR':
             return 4
-        if self.rank == Rank.FIVE:
+        if self.rank.name == 'FIVE':
             return 5
-        if self.rank == Rank.SIX:
+        if self.rank.name == 'SIX':
             return 6
-        if self.rank == Rank.SEVEN:
+        if self.rank.name == 'SEVEN':
             return 7
-        if self.rank == Rank.EIGHT:
+        if self.rank.name == 'EIGHT':
             return 8
-        if self.rank == Rank.NINE:
+        if self.rank.name == 'NINE':
             return 9
         return 10
 
     def isAce(self):
-        return self.rank == Rank.ACE
+        return self.rank.name == 'ACE'
 
 

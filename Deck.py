@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
-from Card import Card, cardFromIndex
+from Card import cardFromIndex
 import random
 
-class Deck:
+class Deck():
 
     def __init__(self, numDecks):
         self.numDecks = numDecks
