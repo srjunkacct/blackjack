@@ -18,11 +18,17 @@ class Hand:
         return self.computeValue()[0]
 
     def computeValue(self):
-        score = sum([card.value() for card in self.cards])
-        hasAce = any([card.isAce() for card in self.cards])
+        score = self.score()
+        hasAce = self.hasAce()
         if hasAce and score <= 11:
             return (score + 10, True)
         return (score, False)
+
+    def hasAce(self):
+        return any([card.isAce() for card in self.cards])
+
+    def score(self):
+        return sum([card.value() for card in self.cards])
 
     def isBlackjack(self):
         return self.computeValue() == 21 and len(self.cards) == 2

@@ -31,7 +31,7 @@ class HandState:
         if ( self.hand.size() == 2):
             if self.wasDoubled == False:
                 actions.append(Action.DOUBLE)
-            if ( self.hand.cards[0].value() == self.hand.cards[1].value() ):
+            if ( self.hand.cards[0].value() == self.hand.cards[1].value() ) and ( not ( self.wasSplit and self.hand.cards[0].value == 11 ) ):
                 actions.append(Action.SPLIT)
         return actions
 
@@ -42,21 +42,24 @@ class HandState:
         if self.done == True or ( not action in self.actions ):
             raise Exception("Error:  action not valid for hand")
         if action == Action.STAND:
-            return HandState( self.hand, self.wasSplit, self.wasDoubled, True, self.multiplier )
+            return [ HandState( self.hand, self.wasSplit, self.wasDoubled, True, self.multiplier ) ]
         elif action == Action.HIT:
             hand = self.hand.hit(deck)
-            return HandState( hand, self.wasSplit, False, False, self.multiplier )
+            return [ HandState( hand, self.wasSplit, False, False, self.multiplier ) ]
         elif action == Action.DOUBLE:
             if len(self.hand.cards) != 2:
                 raise Exception("Error:  action not valid for hand")
             hand = self.hand.hit(deck)
-            return HandState( hand, self.wasSplit, True, True, 2.0 * self.multiplier)
+            return [ HandState( hand, self.wasSplit, True, True, 2.0 * self.multiplier) ]
         elif action == Action.SPLIT:
-            cards = self.hand.cards[0:1]
+            cards = self.hand.cards
             canContinue = ( cards[0].isAce() )
-            oneCardHand = Hand( cards )
-            newHand = oneCardHand.hit( deck )
-            return HandState( newHand, True, False, canContinue, 2.0 * self.multiplier )
+            oldHand = Hand( cards[0] )
+            oldHand = oldHand.hit( deck )
+            newHand = Hand( cards[1] )
+            newHand = newHand.hit( deck )
+            return ( HandState( oldHand, True, False, canContinue, self.multiplier ),
+                     HandState( newHand, True, False, canContinue, self.multiplier ) )
         else:
             raise Exception("Error:  Unknown action")
 
